@@ -87,5 +87,17 @@ def delete(id):
 
     return jsonify({"Status":"delete"}, db['users']), 200
 
+
+
+
+@app.route('/teste', methods=['GET', 'POST'])
+
+def teste():
+    if request.method == 'GET':
+        return jsonify({'method': 'GET'})
+    elif request.method == 'POST':
+        return jsonify({'method': 'POST'})
+
+        
 if __name__ == '__main__':
     app.run(debug=True)
