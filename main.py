@@ -26,26 +26,29 @@ def get_id(id):
     else:
         return jsonify(result), 200
 
+
 @app.route('/post', methods=['POST'])
 def post():
     result = request.get_json()
     
-    if not result or 'nome' not in result or 'age' not in result:
+    if not result or 'name' not in result or 'age' not in result:
         return jsonify({"error": "Invalid data"}), 400
-    
-    nome = result['nome']
+
+    name = result['name']
     age = result['age']
+    
+    if any(user['name'] == name for user in db['users']):
+        return jsonify({'error': 'Name already exists'}), 400
     
     new_id = len(db['users']) + 1
     
     db['users'].append({
         'id': new_id, 
-        'nome': nome, 
+        'name': name, 
         'age': age
     })
-    
-    return jsonify(db['users']), 201
 
+    return jsonify(db['users']), 201
 
 
 if __name__ == '__main__':
