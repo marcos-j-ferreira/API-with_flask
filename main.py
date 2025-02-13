@@ -50,6 +50,27 @@ def post():
 
     return jsonify(db['users']), 201
 
+@app.route('/put/<int:id>', methods=['PUT'])
+def put(id):
+    result = request.get_json()
+
+    if not result or 'name' not in result or 'age' not in result:
+        return jsonify({"Error": "Invalid data"}), 400
+    
+    name = result['name']
+    age = result['age']
+
+    user = next((user for user in db['users'] if user['id'] == id), None)
+
+    if not user:
+        return jsonify({'error': 'Id not found'}), 404
+    
+    user['name'] = name
+    user['age'] = age
+
+    return jsonify({"Status":"update"}, db['users']), 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
