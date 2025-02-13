@@ -70,7 +70,22 @@ def put(id):
 
     return jsonify({"Status":"update"}, db['users']), 200
 
+@app.route('/delete/<int:id>', methods=['DELETE'])
+def delete(id):
 
+    if not id:
+        return jsonify({"Error": "Invalid data"}), 400
+    
+    id = next((user for user in db['users'] if user['id'] == id), None)
+
+    print(id)
+
+    if not id:
+        return jsonify({'error': 'Id not found'}), 404
+    
+    db['users'].remove(id)
+
+    return jsonify({"Status":"delete"}, db['users']), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
